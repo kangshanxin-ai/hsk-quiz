@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HSK 3~4급 단어 복습 패키지</title>
+<style>
+:root {
+ --bg:#fffaf6; --card:#fff; --text:#252525; --muted:#777; --line:#e8e1db;
+ --accent:#d96c5d; --accentSoft:#fff0ec; --ok:#2f7d3a; --okSoft:#edf7ee;
+ --bad:#b23b3b; --badSoft:#fff0f0; --chip:#f7f2ee;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
+.wrap{width:min(760px,100%);margin:0 auto;padding:18px 16px 38px}
+header{text-align:center;padding:14px 8px 18px}
+h1{font-size:clamp(25px,6vw,36px);margin:0 0 8px}
+.sub{color:var(--muted);line-height:1.65;font-size:14px}
+.brand{color:#999;font-size:12px;margin-top:8px}
+.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mode{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:18px;text-align:left;cursor:pointer;min-height:126px}
+.mode:hover{border-color:#cfc3ba}
+.mode strong{display:block;font-size:18px;margin-bottom:7px}
+.mode span{display:block;font-size:13px;color:var(--muted);line-height:1.5}
+.mode .count{margin-top:8px;color:var(--accent);font-weight:700}
+.panel{display:none}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 2px 8px;color:var(--muted);font-size:14px}
+.progress{height:9px;background:#eee7e1;border-radius:999px;overflow:hidden;margin-bottom:15px}
+.progress>div{height:100%;width:0;background:var(--accent);transition:width .2s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px 22px;box-shadow:0 8px 24px rgba(80,60,40,.06)}
+.qtitle{font-size:14px;color:var(--accent);font-weight:700;margin-bottom:12px}
+.prompt{font-size:clamp(20px,5vw,27px);font-weight:700;line-height:1.55;white-space:pre-line;margin-bottom:20px}
+.options{display:grid;gap:11px}
+.option{width:100%;min-height:56px;border:1px solid var(--line);border-radius:15px;background:#fff;font-size:18px;padding:13px 16px;text-align:left;cursor:pointer;line-height:1.45}
+.option.correct{background:var(--okSoft);border-color:#91c497;color:var(--ok)}
+.option.wrong{background:var(--badSoft);border-color:#e0a4a4;color:var(--bad)}
+.option:disabled{opacity:1;cursor:default}
+.feedback{display:none;margin-top:16px;padding:13px 14px;border-radius:14px;line-height:1.55;font-size:14px;white-space:pre-line}
+.feedback.show{display:block}
+.feedback.ok{background:var(--okSoft);color:var(--ok)}
+.feedback.bad{background:var(--badSoft);color:var(--bad)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button.primary,button.secondary{min-height:48px;border-radius:14px;padding:0 17px;font-size:15px;cursor:pointer}
+button.primary{background:var(--accent);color:#fff;border:0;flex:1}
+button.secondary{background:#fff;border:1px solid var(--line);color:var(--text)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.result{display:none;text-align:center}
+.score{font-size:52px;font-weight:800;margin:10px 0 5px}
+.missed{text-align:left;border-top:1px solid var(--line);margin-top:20px;padding-top:17px}
+.missed-list{display:grid;gap:8px;max-height:340px;overflow:auto}
+.missed-item{background:#faf7f4;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.5}
+.home-note{margin-top:14px;color:#888;font-size:13px;text-align:center}
+.footer{text-align:center;color:#999;font-size:12px;margin-top:18px}
+@media(max-width:480px){
+ .menu{grid-template-columns:1fr}
+ .card{padding:21px 16px}
+ .actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>HSK 3~4급 단어 복습</h1>
+  <div class="sub">오늘은 어떤 방식으로 복습할까요?<br>정답을 고르면 바로 확인할 수 있고, 마지막에는 틀린 문제만 다시 풀 수 있습니다.</div>
+  <div class="brand">@book.yoonseul</div>
+</header>
+
+<section id="home">
+  <div class="menu">
+    <button class="mode" data-mode="meaning"><strong>① 단어 뜻 퀴즈</strong><span>중국어 단어 → 핵심 한국어 뜻</span><span class="count">36문제</span></button>
+    <button class="mode" data-mode="collocation"><strong>② 搭配 고르기</strong><span>문장에서 자연스럽게 결합하는 단어 고르기</span><span class="count">36문제</span></button>
+    <button class="mode" data-mode="synonym"><strong>③ 유의어 구별</strong><span>扔/丢, 打印/复印, 符合/适合 등 비교</span><span class="count">24문제</span></button>
+    <button class="mode" data-mode="cloze"><strong>④ HSK 문장 빈칸</strong><span>HSK3~4급 수준 문맥에서 정답 고르기</span><span class="count">36문제</span></button>
+  </div>
+  <div class="home-note">문제 순서와 보기 순서는 다시 시작할 때마다 바뀝니다.</div>
+</section>
+
+<section class="panel" id="quizPanel">
+  <div class="topbar"><span id="progressText"></span><span id="scoreText"></span></div>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div class="card">
+    <div class="qtitle" id="modeTitle"></div>
+    <div class="prompt" id="prompt"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="secondary" id="homeBtn" type="button">메뉴로</button>
+      <button class="secondary" id="restartBtn" type="button">처음부터</button>
+      <button class="primary" id="nextBtn" type="button" disabled>다음</button>
+    </div>
+  </div>
+</section>
+
+<section class="card result" id="resultPanel">
+  <div class="qtitle" id="resultTitle"></div>
+  <h2>복습 완료!</h2>
+  <div class="score" id="finalScore"></div>
+  <div id="finalMessage"></div>
+  <div class="missed" id="missedSection">
+    <h3>다시 확인할 문제</h3>
+    <div class="missed-list" id="missedList"></div>
+  </div>
+  <div class="actions">
+    <button class="secondary" id="resultHomeBtn" type="button">다른 퀴즈 선택</button>
+    <button class="secondary" id="retryAllBtn" type="button">전체 다시 풀기</button>
+    <button class="primary" id="retryWrongBtn" type="button">틀린 문제만 다시 풀기</button>
+  </div>
+</section>
+
+<div class="footer">HSK 3~4급 단어 복습 · @book.yoonseul</div>
+</div>
+
+<script>
+const MODES = {"meaning": {"title": "단어 뜻 퀴즈", "subtitle": "중국어 단어의 핵심 뜻을 고르세요.", "items": [{"prompt": "‘存’의 뜻으로 가장 알맞은 것은?", "answer": "저장하다·맡기다·저축하다", "options": ["저장하다·맡기다·저축하다", "포기하다", "복사하다"], "explanation": "存 cún → 저장하다·맡기다·저축하다"}, {"prompt": "‘扔’의 뜻으로 가장 알맞은 것은?", "answer": "던지다·버리다", "options": ["던지다·버리다", "잃어버리다", "우편·택배로 보내다"], "explanation": "扔 rēng → 던지다·버리다"}, {"prompt": "‘丢’의 뜻으로 가장 알맞은 것은?", "answer": "잃어버리다", "options": ["잃어버리다", "던지다·버리다", "남다·남기다"], "explanation": "丢 diū → 잃어버리다"}, {"prompt": "‘脱’의 뜻으로 가장 알맞은 것은?", "answer": "벗다", "options": ["벗다", "기입하다·채우다", "저장하다·맡기다·저축하다"], "explanation": "脱 tuō → 벗다"}, {"prompt": "‘猜’의 뜻으로 가장 알맞은 것은?", "answer": "추측하다·맞혀 보다", "options": ["추측하다·맞혀 보다", "추산하다·예상하다", "익숙하다·잘 알다"], "explanation": "猜 cāi → 추측하다·맞혀 보다"}, {"prompt": "‘寄’의 뜻으로 가장 알맞은 것은?", "answer": "우편·택배로 보내다", "options": ["우편·택배로 보내다", "행사·활동을 개최하다", "남다·남기다"], "explanation": "寄 jì → 우편·택배로 보내다"}, {"prompt": "‘留’의 뜻으로 가장 알맞은 것은?", "answer": "남다·남기다", "options": ["남다·남기다", "잃어버리다", "미루다·연기하다"], "explanation": "留 liú → 남다·남기다"}, {"prompt": "‘弄’의 뜻으로 가장 알맞은 것은?", "answer": "다루다·어떤 상태가 되게 하다", "options": ["다루다·어떤 상태가 되게 하다", "인쇄하다", "얻다·획득하다"], "explanation": "弄 nòng → 다루다·어떤 상태가 되게 하다"}, {"prompt": "‘赶’의 뜻으로 가장 알맞은 것은?", "answer": "서두르다·시간에 맞춰 따라잡다", "options": ["서두르다·시간에 맞춰 따라잡다", "계속하다", "적합하다·잘 맞다"], "explanation": "赶 gǎn → 서두르다·시간에 맞춰 따라잡다"}, {"prompt": "‘响’의 뜻으로 가장 알맞은 것은?", "answer": "울리다·소리가 나다", "options": ["울리다·소리가 나다", "반영하다·상황을 알리다", "통화 중이다"], "explanation": "响 xiǎng → 울리다·소리가 나다"}, {"prompt": "‘打印’의 뜻으로 가장 알맞은 것은?", "answer": "인쇄하다", "options": ["인쇄하다", "복사하다", "기입하다·채우다"], "explanation": "打印 dǎyìn → 인쇄하다"}, {"prompt": "‘反映’의 뜻으로 가장 알맞은 것은?", "answer": "반영하다·상황을 알리다", "options": ["반영하다·상황을 알리다", "일으키다·야기하다", "격려하다"], "explanation": "反映 fǎnyìng → 반영하다·상황을 알리다"}, {"prompt": "‘复印’의 뜻으로 가장 알맞은 것은?", "answer": "복사하다", "options": ["복사하다", "인쇄하다", "우편·택배로 보내다"], "explanation": "复印 fùyìn → 복사하다"}, {"prompt": "‘放弃’의 뜻으로 가장 알맞은 것은?", "answer": "포기하다", "options": ["포기하다", "계속하다", "거절하다"], "explanation": "放弃 fàngqì → 포기하다"}, {"prompt": "‘符合’의 뜻으로 가장 알맞은 것은?", "answer": "조건·기준에 부합하다", "options": ["조건·기준에 부합하다", "적합하다·잘 맞다", "부족하다·결여되다"], "explanation": "符合 fúhé → 조건·기준에 부합하다"}, {"prompt": "‘估计’의 뜻으로 가장 알맞은 것은?", "answer": "추산하다·예상하다", "options": ["추산하다·예상하다", "추측하다·맞혀 보다", "반영하다·상황을 알리다"], "explanation": "估计 gūjì → 추산하다·예상하다"}, {"prompt": "‘鼓励’의 뜻으로 가장 알맞은 것은?", "answer": "격려하다", "options": ["격려하다", "축하하다", "허락하다"], "explanation": "鼓励 gǔlì → 격려하다"}, {"prompt": "‘后悔’의 뜻으로 가장 알맞은 것은?", "answer": "후회하다", "options": ["후회하다", "오해하다·오해", "거절하다"], "explanation": "后悔 hòuhuǐ → 후회하다"}, {"prompt": "‘获得’의 뜻으로 가장 알맞은 것은?", "answer": "얻다·획득하다", "options": ["얻다·획득하다", "부족하다·결여되다", "포기하다"], "explanation": "获得 huòdé → 얻다·획득하다"}, {"prompt": "‘举办’의 뜻으로 가장 알맞은 것은?", "answer": "행사·활동을 개최하다", "options": ["행사·활동을 개최하다", "축하하다", "계속하다"], "explanation": "举办 jǔbàn → 행사·활동을 개최하다"}, {"prompt": "‘拒绝’의 뜻으로 가장 알맞은 것은?", "answer": "거절하다", "options": ["거절하다", "허락하다", "격려하다"], "explanation": "拒绝 jùjué → 거절하다"}, {"prompt": "‘缺少’의 뜻으로 가장 알맞은 것은?", "answer": "부족하다·결여되다", "options": ["부족하다·결여되다", "얻다·획득하다", "조건·기준에 부합하다"], "explanation": "缺少 quēshǎo → 부족하다·결여되다"}, {"prompt": "‘适合’의 뜻으로 가장 알맞은 것은?", "answer": "적합하다·잘 맞다", "options": ["적합하다·잘 맞다", "조건·기준에 부합하다", "익숙하다·잘 알다"], "explanation": "适合 shìhé → 적합하다·잘 맞다"}, {"prompt": "‘熟悉’의 뜻으로 가장 알맞은 것은?", "answer": "익숙하다·잘 알다", "options": ["익숙하다·잘 알다", "적합하다·잘 맞다", "추산하다·예상하다"], "explanation": "熟悉 shúxī → 익숙하다·잘 알다"}, {"prompt": "‘提前’의 뜻으로 가장 알맞은 것은?", "answer": "앞당기다·미리", "options": ["앞당기다·미리", "미루다·연기하다", "계속하다"], "explanation": "提前 tíqián → 앞당기다·미리"}, {"prompt": "‘推迟’의 뜻으로 가장 알맞은 것은?", "answer": "미루다·연기하다", "options": ["미루다·연기하다", "앞당기다·미리", "포기하다"], "explanation": "推迟 tuīchí → 미루다·연기하다"}, {"prompt": "‘填’의 뜻으로 가장 알맞은 것은?", "answer": "기입하다·채우다", "options": ["기입하다·채우다", "인쇄하다", "우편·택배로 보내다"], "explanation": "填 tián → 기입하다·채우다"}, {"prompt": "‘误会’의 뜻으로 가장 알맞은 것은?", "answer": "오해하다·오해", "options": ["오해하다·오해", "후회하다", "익숙하다·잘 알다"], "explanation": "误会 wùhuì → 오해하다·오해"}, {"prompt": "‘引起’의 뜻으로 가장 알맞은 것은?", "answer": "일으키다·야기하다", "options": ["일으키다·야기하다", "반영하다·상황을 알리다", "얻다·획득하다"], "explanation": "引起 yǐnqǐ → 일으키다·야기하다"}, {"prompt": "‘允许’의 뜻으로 가장 알맞은 것은?", "answer": "허락하다", "options": ["허락하다", "거절하다", "적합하다·잘 맞다"], "explanation": "允许 yǔnxǔ → 허락하다"}, {"prompt": "‘值得’의 뜻으로 가장 알맞은 것은?", "answer": "~할 가치가 있다", "options": ["~할 가치가 있다", "조건·기준에 부합하다", "계속하다"], "explanation": "值得 zhídé → ~할 가치가 있다"}, {"prompt": "‘祝贺’의 뜻으로 가장 알맞은 것은?", "answer": "축하하다", "options": ["축하하다", "격려하다", "행사·활동을 개최하다"], "explanation": "祝贺 zhùhè → 축하하다"}, {"prompt": "‘占线’의 뜻으로 가장 알맞은 것은?", "answer": "통화 중이다", "options": ["통화 중이다", "울리다·소리가 나다", "미루다·연기하다"], "explanation": "占线 zhànxiàn → 통화 중이다"}, {"prompt": "‘来得及’의 뜻으로 가장 알맞은 것은?", "answer": "시간이 충분하다·늦지 않다", "options": ["시간이 충분하다·늦지 않다", "시간이 부족하다·미처 못하다", "서두르다·시간에 맞춰 따라잡다"], "explanation": "来得及 lái de jí → 시간이 충분하다·늦지 않다"}, {"prompt": "‘来不及’의 뜻으로 가장 알맞은 것은?", "answer": "시간이 부족하다·미처 못하다", "options": ["시간이 부족하다·미처 못하다", "시간이 충분하다·늦지 않다", "앞당기다·미리"], "explanation": "来不及 lái bù jí → 시간이 부족하다·미처 못하다"}, {"prompt": "‘继续’의 뜻으로 가장 알맞은 것은?", "answer": "계속하다", "options": ["계속하다", "포기하다", "미루다·연기하다"], "explanation": "继续 jìxù → 계속하다"}]}, "collocation": {"title": "搭配 고르기", "subtitle": "문맥에 맞는 핵심 搭配를 고르세요.", "items": [{"prompt": "为了明年去旅行，她每个月都___一点儿钱。", "answer": "存", "options": ["存", "扔", "丢"], "explanation": "‘存钱’은 돈을 저축한다는 뜻입니다."}, {"prompt": "请把垃圾___进垃圾桶里。", "answer": "扔", "options": ["扔", "寄", "留"], "explanation": "‘扔进垃圾桶’은 쓰레기를 쓰레기통 안으로 버리는 표현입니다."}, {"prompt": "我的钥匙不知道___在哪儿了。", "answer": "丢", "options": ["丢", "存", "寄"], "explanation": "‘丢了/丢在哪儿了’는 물건을 잃어버렸을 때 씁니다."}, {"prompt": "屋里很热，你可以把外套___了。", "answer": "脱", "options": ["脱", "填", "存"], "explanation": "옷을 벗는 것은 ‘脱衣服/脱外套’입니다."}, {"prompt": "你能___出这是谁的书吗？", "answer": "猜", "options": ["猜", "填", "寄"], "explanation": "‘猜出’은 추측해서 알아맞히다는 뜻입니다."}, {"prompt": "我昨天去邮局___了一封信。", "answer": "寄", "options": ["寄", "扔", "留"], "explanation": "편지·소포를 우편으로 보내는 것은 ‘寄’입니다."}, {"prompt": "请___下你的电话号码。", "answer": "留", "options": ["留", "丢", "脱"], "explanation": "‘留下电话号码’는 전화번호를 남기다는 뜻입니다."}, {"prompt": "别把新衣服___脏了。", "answer": "弄", "options": ["弄", "赶", "响"], "explanation": "‘弄脏’은 더럽게 만들다는 결과 구조입니다."}, {"prompt": "我们得早点儿出门去___飞机。", "answer": "赶", "options": ["赶", "寄", "办"], "explanation": "‘赶飞机’는 비행기 시간에 맞추기 위해 서두르다는 뜻입니다."}, {"prompt": "电话___了，你帮我接一下。", "answer": "响", "options": ["响", "赶", "填"], "explanation": "전화벨이 울리는 것은 ‘电话响了’입니다."}, {"prompt": "请把这份电子文件___出来。", "answer": "打印", "options": ["打印", "复印", "反映"], "explanation": "전자 파일을 종이로 출력할 때 ‘打印’을 씁니다."}, {"prompt": "有问题可以及时向老师___。", "answer": "反映", "options": ["反映", "估计", "符合"], "explanation": "‘向老师反映问题’은 문제나 상황을 선생님에게 알리다는 뜻입니다."}, {"prompt": "这张证件请帮我___两份。", "answer": "复印", "options": ["复印", "打印", "举办"], "explanation": "이미 있는 종이 문서를 복사할 때 ‘复印’을 씁니다."}, {"prompt": "遇到一点儿困难就___，很难成功。", "answer": "放弃", "options": ["放弃", "继续", "鼓励"], "explanation": "‘放弃’는 하던 일을 포기하다는 뜻입니다."}, {"prompt": "这份材料不___学校的要求。", "answer": "符合", "options": ["符合", "适合", "熟悉"], "explanation": "‘符合要求/标准/条件’은 요구·기준에 부합한다는 뜻입니다."}, {"prompt": "我___他晚上八点左右能到。", "answer": "估计", "options": ["估计", "祝贺", "误会"], "explanation": "근거를 바탕으로 시간 등을 예상할 때 ‘估计’를 씁니다."}, {"prompt": "老师一直___我们多开口说中文。", "answer": "鼓励", "options": ["鼓励", "拒绝", "推迟"], "explanation": "‘鼓励＋사람＋동사’는 누군가가 어떤 행동을 하도록 격려하는 구조입니다."}, {"prompt": "当时没有听你的话，我现在很___。", "answer": "后悔", "options": ["后悔", "熟悉", "适合"], "explanation": "이미 한 선택을 아쉽게 생각할 때 ‘后悔’를 씁니다."}, {"prompt": "她在比赛中___了第一名。", "answer": "获得", "options": ["获得", "缺少", "放弃"], "explanation": "‘获得第一名/机会/经验’처럼 성과·기회를 얻을 때 씁니다."}, {"prompt": "学校下个月要___一次中文比赛。", "answer": "举办", "options": ["举办", "获得", "反映"], "explanation": "행사·대회·활동을 개최할 때 ‘举办’을 씁니다."}, {"prompt": "他有事，所以___了朋友的邀请。", "answer": "拒绝", "options": ["拒绝", "允许", "鼓励"], "explanation": "‘拒绝邀请/要求/帮助’는 제안 등을 받아들이지 않는다는 뜻입니다."}, {"prompt": "这个计划还___一些重要的信息。", "answer": "缺少", "options": ["缺少", "符合", "获得"], "explanation": "‘缺少＋명사’는 필요한 것이 충분하지 않음을 나타냅니다."}, {"prompt": "这本书比较简单，很___初学者。", "answer": "适合", "options": ["适合", "符合", "熟悉"], "explanation": "‘适合＋사람’은 그 사람에게 잘 맞는다는 뜻입니다."}, {"prompt": "我刚来这里，对附近的路还不太___。", "answer": "熟悉", "options": ["熟悉", "适合", "值得"], "explanation": "‘对＋대상＋熟悉’는 그 대상을 잘 알고 익숙하다는 뜻입니다."}, {"prompt": "为了不迟到，我们最好___十分钟出发。", "answer": "提前", "options": ["提前", "推迟", "继续"], "explanation": "예정된 시간보다 일찍 하는 것은 ‘提前’입니다."}, {"prompt": "因为下大雨，比赛___到下周了。", "answer": "推迟", "options": ["推迟", "提前", "继续"], "explanation": "일정을 뒤로 미루는 것은 ‘推迟到…’입니다."}, {"prompt": "请在表格上___你的姓名和电话。", "answer": "填", "options": ["填", "寄", "脱"], "explanation": "표·양식에 정보를 기입할 때 ‘填’을 씁니다."}, {"prompt": "你别___，我不是那个意思。", "answer": "误会", "options": ["误会", "后悔", "估计"], "explanation": "상대의 뜻을 잘못 이해하는 것은 ‘误会’입니다."}, {"prompt": "这件新闻___了大家的注意。", "answer": "引起", "options": ["引起", "获得", "反映"], "explanation": "‘引起注意/兴趣/讨论’은 관심이나 반응을 일으키다는 뜻입니다."}, {"prompt": "这里不___吸烟。", "answer": "允许", "options": ["允许", "拒绝", "值得"], "explanation": "규정상 어떤 행동을 허락할 때 ‘允许’을 씁니다."}, {"prompt": "这本书内容很好，___一看。", "answer": "值得", "options": ["值得", "符合", "来得及"], "explanation": "‘值得＋동사’는 그 행동을 할 가치가 있다는 뜻입니다."}, {"prompt": "___你顺利通过考试！", "answer": "祝贺", "options": ["祝贺", "鼓励", "举办"], "explanation": "좋은 결과를 얻은 사람에게 축하할 때 ‘祝贺’를 씁니다."}, {"prompt": "我打了好几次电话，可是一直___。", "answer": "占线", "options": ["占线", "响", "来不及"], "explanation": "전화선이 통화 중일 때 ‘占线’을 씁니다."}, {"prompt": "现在才七点半，我们还___吃早饭。", "answer": "来得及", "options": ["来得及", "来不及", "推迟"], "explanation": "어떤 일을 할 시간이 충분할 때 ‘来得及＋동사’를 씁니다."}, {"prompt": "快点儿！再不走就___赶飞机了。", "answer": "来不及", "options": ["来不及", "来得及", "提前"], "explanation": "시간이 부족해서 어떤 행동을 못 할 것 같을 때 ‘来不及＋동사’를 씁니다."}, {"prompt": "休息十分钟以后，我们___上课。", "answer": "继续", "options": ["继续", "放弃", "推迟"], "explanation": "중단했던 행동을 이어서 할 때 ‘继续’를 씁니다."}]}, "synonym": {"title": "유의어·헷갈리는 단어 구별", "subtitle": "비슷해 보이는 단어의 쓰임 차이를 확인하세요.", "items": [{"prompt": "친구가 준 책을 실수로 잃어버렸다. 빈칸에 가장 알맞은 것은?\n我不小心把朋友送我的书___了。", "answer": "丢", "options": ["丢", "扔", "存"], "explanation": "의도하지 않게 잃어버렸으므로 ‘丢’가 맞습니다. ‘扔’은 의도적으로 던지거나 버리는 행동입니다."}, {"prompt": "오래된 신문을 쓰레기통에 버렸다. 가장 알맞은 것은?\n我把旧报纸___进垃圾桶了。", "answer": "扔", "options": ["扔", "丢", "留"], "explanation": "의도적으로 버리는 동작이므로 ‘扔’이 알맞습니다."}, {"prompt": "종이로 된 여권 사본을 두 장 더 만들려고 한다. 가장 알맞은 동사는?", "answer": "复印", "options": ["复印", "打印", "填"], "explanation": "이미 존재하는 종이 문서를 복사하는 것은 ‘复印’입니다. 전자 파일을 종이로 출력하는 것은 ‘打印’입니다."}, {"prompt": "컴퓨터에 있는 신청서를 종이로 출력한다. 가장 알맞은 동사는?", "answer": "打印", "options": ["打印", "复印", "寄"], "explanation": "전자 파일을 프린터로 출력하므로 ‘打印’입니다."}, {"prompt": "‘이 책은 초급 학습자에게 잘 맞는다’에서 알맞은 것은?\n这本书很___初学者。", "answer": "适合", "options": ["适合", "符合", "熟悉"], "explanation": "사람·상황에 잘 맞는다는 뜻은 ‘适合’입니다. ‘符合’는 요구·기준·조건에 부합할 때 씁니다."}, {"prompt": "‘이 자료는 학교의 요구에 부합한다’에서 알맞은 것은?\n这份材料___学校的要求。", "answer": "符合", "options": ["符合", "适合", "值得"], "explanation": "요구·조건·기준에 부합하므로 ‘符合要求’가 자연스럽습니다."}, {"prompt": "‘나는 그가 아마 8시쯤 도착할 것이라고 예상한다’에서 가장 알맞은 것은?\n我___他八点左右会到。", "answer": "估计", "options": ["估计", "猜", "误会"], "explanation": "시간·수량·가능성을 상황에 근거해 예상할 때 ‘估计’가 자연스럽습니다."}, {"prompt": "정답을 모르는 상태에서 ‘한번 맞혀 봐’라고 할 때 알맞은 동사는?", "answer": "猜", "options": ["猜", "估计", "反映"], "explanation": "정답을 추측해 맞혀 보는 행위는 ‘猜’입니다."}, {"prompt": "‘선생님이 학생들이 계속 연습하도록 격려했다’에서 알맞은 것은?", "answer": "鼓励", "options": ["鼓励", "祝贺", "允许"], "explanation": "행동을 하도록 힘을 북돋우는 것은 ‘鼓励’입니다. ‘祝贺’는 좋은 결과를 축하합니다."}, {"prompt": "‘시험에 합격한 것을 축하해!’에서 알맞은 것은?", "answer": "祝贺", "options": ["祝贺", "鼓励", "举办"], "explanation": "이미 이룬 좋은 결과에 대해 축하하는 것은 ‘祝贺’입니다."}, {"prompt": "‘회의를 다음 주로 미루다’에서 알맞은 것은?", "answer": "推迟", "options": ["推迟", "提前", "继续"], "explanation": "예정 시점을 뒤로 옮기는 것은 ‘推迟’입니다."}, {"prompt": "‘회의를 30분 앞당기다’에서 알맞은 것은?", "answer": "提前", "options": ["提前", "推迟", "赶"], "explanation": "예정 시점보다 앞서게 하는 것은 ‘提前’입니다."}, {"prompt": "‘지금 출발하면 비행기를 탈 시간이 충분하다’에서 알맞은 것은?\n现在出发还___赶飞机。", "answer": "来得及", "options": ["来得及", "赶得上", "来不及"], "explanation": "‘来得及＋동사’는 그 행동을 할 시간이 충분하다는 뜻입니다."}, {"prompt": "‘서둘러야 마지막 버스를 따라잡을 수 있다’에서 핵심 표현으로 가장 알맞은 것은?", "answer": "赶得上", "options": ["赶得上", "来得及", "提前"], "explanation": "구체적인 교통수단·일정을 놓치지 않고 따라잡는 데는 ‘赶得上＋대상’이 잘 맞습니다."}, {"prompt": "‘이 행사에는 학생이 200명 참가했다’처럼 행사 자체를 ‘개최하다’에 가까운 동사는?", "answer": "举办", "options": ["举办", "获得", "继续"], "explanation": "대회·행사·활동을 조직하여 열 때는 ‘举办’을 씁니다."}, {"prompt": "‘상을 받다/기회를 얻다’에 공통으로 쓸 수 있는 동사는?", "answer": "获得", "options": ["获得", "举办", "缺少"], "explanation": "성과·기회·경험 등을 얻는 것은 ‘获得’입니다."}, {"prompt": "‘내 제안을 받아들이지 않았다’에 가장 가까운 동사는?", "answer": "拒绝", "options": ["拒绝", "允许", "鼓励"], "explanation": "요구·제안·초대 등을 받아들이지 않는 것은 ‘拒绝’입니다."}, {"prompt": "‘이곳에서는 사진 촬영을 허락한다’에 가장 가까운 동사는?", "answer": "允许", "options": ["允许", "拒绝", "符合"], "explanation": "어떤 행동을 하도록 허락하는 것은 ‘允许’입니다."}, {"prompt": "‘그 지역의 길을 잘 알고 있다’에 알맞은 것은?", "answer": "熟悉", "options": ["熟悉", "适合", "符合"], "explanation": "대상에 대해 잘 알고 익숙한 상태는 ‘熟悉’입니다."}, {"prompt": "‘새로운 일을 계속해서 하다’에 알맞은 것은?", "answer": "继续", "options": ["继续", "放弃", "推迟"], "explanation": "하던 행동을 이어 가는 것은 ‘继续’입니다."}, {"prompt": "‘어려워서 아예 그만두다’에 알맞은 것은?", "answer": "放弃", "options": ["放弃", "继续", "推迟"], "explanation": "목표나 일을 더 이상 하지 않기로 하는 것은 ‘放弃’입니다."}, {"prompt": "‘전화가 울렸다’에 알맞은 것은?\n电话___了。", "answer": "响", "options": ["响", "占线", "反映"], "explanation": "전화벨이 소리를 내는 것은 ‘响’입니다."}, {"prompt": "‘전화를 걸었지만 계속 통화 중이었다’에 알맞은 것은?", "answer": "占线", "options": ["占线", "响", "来不及"], "explanation": "전화선이 통화 중인 상태는 ‘占线’입니다."}, {"prompt": "‘학생들의 의견을 학교에 전달하다’에 알맞은 것은?", "answer": "反映", "options": ["反映", "引起", "估计"], "explanation": "상황·문제·의견을 상급자나 기관에 알리는 것은 ‘反映’입니다."}]}, "cloze": {"title": "HSK 문장 빈칸 퀴즈", "subtitle": "HSK3~4급 수준의 문장에서 알맞은 단어를 고르세요.", "items": [{"prompt": "这些钱我先___在银行卡里，以后旅行的时候再用。", "answer": "存", "options": ["存", "寄", "扔"], "explanation": "돈을 은행카드/계좌에 저축해 두는 문맥이므로 ‘存’입니다."}, {"prompt": "这里很干净，请不要随便___垃圾。", "answer": "扔", "options": ["扔", "丢", "留"], "explanation": "쓰레기를 의도적으로 버리는 행위는 ‘扔垃圾’입니다."}, {"prompt": "他太粗心了，一个月已经___了两次钥匙。", "answer": "丢", "options": ["丢", "扔", "寄"], "explanation": "부주의로 열쇠를 잃어버린 것이므로 ‘丢’입니다."}, {"prompt": "进这个房间以前要先___鞋。", "answer": "脱", "options": ["脱", "填", "存"], "explanation": "신발을 벗는 동작은 ‘脱鞋’입니다."}, {"prompt": "这个问题我也不知道答案，只能___一___。", "answer": "猜", "options": ["猜", "估计", "反映"], "explanation": "정답을 모르는 상태에서 맞혀 보는 행위는 ‘猜一猜’입니다."}, {"prompt": "我已经把生日礼物___给姐姐了，她明天应该能收到。", "answer": "寄", "options": ["寄", "扔", "留"], "explanation": "택배·우편으로 보내고 ‘收到’와 연결되므로 ‘寄给’가 맞습니다."}, {"prompt": "你先别走，老师让你___下来谈一下。", "answer": "留", "options": ["留", "赶", "弄"], "explanation": "그 자리에 남아 있게 하는 것은 ‘留下来’입니다."}, {"prompt": "是谁把我的新书___脏了？", "answer": "弄", "options": ["弄", "赶", "响"], "explanation": "어떤 대상을 더러운 상태로 만들었다는 결과는 ‘弄脏’입니다."}, {"prompt": "快一点儿，不然我们就___不上最后一班地铁了。", "answer": "赶", "options": ["赶", "来", "推"], "explanation": "‘赶不上＋교통수단’은 시간에 맞추지 못한다는 뜻입니다."}, {"prompt": "上课铃一___，大家就走进了教室。", "answer": "响", "options": ["响", "赶", "填"], "explanation": "종·벨이 울리는 것은 ‘响’입니다."}, {"prompt": "报名表在电脑里，你先把它___出来吧。", "answer": "打印", "options": ["打印", "复印", "填"], "explanation": "컴퓨터의 전자 파일을 출력하므로 ‘打印’입니다."}, {"prompt": "如果你对学校有什么意见，可以直接向老师___。", "answer": "反映", "options": ["反映", "引起", "符合"], "explanation": "의견·문제를 담당자에게 알리는 구조는 ‘向…反映’입니다."}, {"prompt": "护照这一页很重要，请帮我___两份。", "answer": "复印", "options": ["复印", "打印", "寄"], "explanation": "이미 있는 종이 문서를 복사하는 것이므로 ‘复印’입니다."}, {"prompt": "学习语言需要时间，不要因为一次失败就___。", "answer": "放弃", "options": ["放弃", "继续", "拒绝"], "explanation": "어려움 때문에 그만두는 것은 ‘放弃’입니다."}, {"prompt": "你的条件完全___我们公司的要求。", "answer": "符合", "options": ["符合", "适合", "熟悉"], "explanation": "‘符合要求/条件/标准’의 고정적인 결합입니다."}, {"prompt": "天气预报说晚上会下雪，我___飞机可能会晚点。", "answer": "估计", "options": ["估计", "猜", "祝贺"], "explanation": "상황을 근거로 가능성을 예상하므로 ‘估计’입니다."}, {"prompt": "父母应该多___孩子自己解决问题。", "answer": "鼓励", "options": ["鼓励", "祝贺", "拒绝"], "explanation": "‘鼓励＋사람＋동사’ 구조로, 스스로 해결하도록 격려한다는 뜻입니다."}, {"prompt": "早知道这么堵车，我就坐地铁了，现在真___。", "answer": "后悔", "options": ["后悔", "误会", "熟悉"], "explanation": "이미 한 선택을 아쉽게 생각하는 문맥이므로 ‘后悔’입니다."}, {"prompt": "他工作很努力，去年___了公司的优秀员工奖。", "answer": "获得", "options": ["获得", "举办", "缺少"], "explanation": "상을 얻거나 획득하는 것은 ‘获得’입니다."}, {"prompt": "学校准备下个月___一次国际文化节。", "answer": "举办", "options": ["举办", "获得", "继续"], "explanation": "행사나 활동을 열 때 ‘举办’을 씁니다."}, {"prompt": "因为那天有别的安排，他只好___了我们的邀请。", "answer": "拒绝", "options": ["拒绝", "允许", "鼓励"], "explanation": "초대를 받아들이지 않는 것은 ‘拒绝邀请’입니다."}, {"prompt": "这篇文章内容不错，不过___一些具体的例子。", "answer": "缺少", "options": ["缺少", "获得", "符合"], "explanation": "필요한 예가 충분하지 않다는 뜻이므로 ‘缺少’입니다."}, {"prompt": "这双鞋太大了，不太___你。", "answer": "适合", "options": ["适合", "符合", "熟悉"], "explanation": "사람에게 크기·스타일 등이 잘 맞는다는 뜻은 ‘适合’입니다."}, {"prompt": "我在这儿住了三年，对附近已经很___了。", "answer": "熟悉", "options": ["熟悉", "适合", "符合"], "explanation": "장소를 잘 알고 익숙한 상태는 ‘熟悉’입니다."}, {"prompt": "明天可能堵车，我们___半个小时出发吧。", "answer": "提前", "options": ["提前", "推迟", "继续"], "explanation": "예정보다 먼저 출발하는 것은 ‘提前’입니다."}, {"prompt": "经理临时有事，会议只好___到下午三点。", "answer": "推迟", "options": ["推迟", "提前", "继续"], "explanation": "시간을 뒤로 미루는 것은 ‘推迟到…’입니다."}, {"prompt": "请先___好申请表，再交给工作人员。", "answer": "填", "options": ["填", "打印", "寄"], "explanation": "양식의 정보를 기입하는 것은 ‘填表/填好申请表’입니다."}, {"prompt": "你___了，我不是不想帮你，只是今天真的没时间。", "answer": "误会", "options": ["误会", "后悔", "估计"], "explanation": "상대방이 자신의 의도를 잘못 이해했음을 바로잡는 문맥입니다."}, {"prompt": "他的发言___了大家对环境问题的关注。", "answer": "引起", "options": ["引起", "反映", "获得"], "explanation": "관심·주의·토론 등을 일으키는 것은 ‘引起’입니다."}, {"prompt": "图书馆里不___大声说话。", "answer": "允许", "options": ["允许", "拒绝", "适合"], "explanation": "규정상 행동을 허락하지 않는다는 의미는 ‘不允许’입니다."}, {"prompt": "这部电影虽然很长，但是非常___看。", "answer": "值得", "options": ["值得", "符合", "来得及"], "explanation": "‘值得＋동사’는 그 행동을 할 가치가 있다는 뜻입니다."}, {"prompt": "听说你考上了大学，真___你！", "answer": "祝贺", "options": ["祝贺", "鼓励", "举办"], "explanation": "좋은 결과를 얻은 사람에게 축하하는 표현입니다."}, {"prompt": "我给客服打了三次电话，可是每次都___。", "answer": "占线", "options": ["占线", "响", "来不及"], "explanation": "전화를 걸었지만 상대 회선이 통화 중인 상황입니다."}, {"prompt": "电影八点开始，现在才七点，我们还___吃个饭。", "answer": "来得及", "options": ["来得及", "来不及", "赶不上"], "explanation": "영화 전 식사를 할 시간이 충분하므로 ‘来得及’입니다."}, {"prompt": "快走吧，再晚十分钟就___坐最后一班车了。", "answer": "来不及", "options": ["来不及", "来得及", "提前"], "explanation": "곧 시간이 부족해질 상황이므로 ‘来不及＋동사’입니다."}, {"prompt": "老师回答完问题以后，又___讲下一课。", "answer": "继续", "options": ["继续", "放弃", "推迟"], "explanation": "중단 후 수업을 이어 가는 것은 ‘继续’입니다."}]}};
+let modeKey = null, questions = [], index = 0, correct = 0, answered = false, missed = [];
+
+function shuffle(a){
+  const x=[...a];
+  for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}
+  return x;
+}
+
+function goHome(){
+  document.getElementById('home').style.display='block';
+  document.getElementById('quizPanel').style.display='none';
+  document.getElementById('resultPanel').style.display='none';
+}
+
+function startMode(key, source=null){
+  modeKey=key;
+  const base=source || MODES[key].items;
+  questions=shuffle(base).map(q=>({...q, options:shuffle(q.options)}));
+  index=0; correct=0; answered=false; missed=[];
+  document.getElementById('home').style.display='none';
+  document.getElementById('resultPanel').style.display='none';
+  document.getElementById('quizPanel').style.display='block';
+  render();
+}
+
+function render(){
+  const q=questions[index]; answered=false;
+  document.getElementById('modeTitle').textContent=MODES[modeKey].title;
+  document.getElementById('prompt').textContent=q.prompt;
+  document.getElementById('progressText').textContent=`${index+1} / ${questions.length}`;
+  document.getElementById('scoreText').textContent=`정답 ${correct}`;
+  document.getElementById('progressBar').style.width=`${index/questions.length*100}%`;
+  const next=document.getElementById('nextBtn');
+  next.disabled=true; next.textContent=index===questions.length-1?'결과 보기':'다음';
+  const fb=document.getElementById('feedback'); fb.className='feedback'; fb.textContent='';
+  const box=document.getElementById('options'); box.innerHTML='';
+  q.options.forEach(opt=>{
+    const b=document.createElement('button'); b.type='button'; b.className='option'; b.textContent=opt;
+    b.addEventListener('click',()=>choose(b,opt)); box.appendChild(b);
+  });
+}
+
+function choose(btn,selected){
+  if(answered)return; answered=true;
+  const q=questions[index];
+  document.querySelectorAll('.option').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.answer)b.classList.add('correct');
+  });
+  const fb=document.getElementById('feedback');
+  if(selected===q.answer){
+    correct++; fb.textContent=`정답입니다!\n${q.explanation}`; fb.className='feedback show ok';
+  }else{
+    btn.classList.add('wrong'); missed.push(q);
+    fb.textContent=`정답은 “${q.answer}”입니다.\n${q.explanation}`; fb.className='feedback show bad';
+  }
+  document.getElementById('scoreText').textContent=`정답 ${correct}`;
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function next(){
+  if(!answered)return;
+  if(index<questions.length-1){index++;render()} else finish();
+}
+
+function finish(){
+  document.getElementById('quizPanel').style.display='none';
+  document.getElementById('resultPanel').style.display='block';
+  document.getElementById('resultTitle').textContent=MODES[modeKey].title;
+  document.getElementById('finalScore').textContent=`${correct} / ${questions.length}`;
+  const pct=Math.round(correct/questions.length*100);
+  document.getElementById('finalMessage').textContent=
+    pct===100?'완벽해요! 모든 문제를 정확하게 풀었습니다.':
+    pct>=80?'아주 잘했어요. 틀린 문제만 한 번 더 보면 좋습니다.':
+    pct>=60?'좋아요. 헷갈린 결합과 단어 차이를 다시 확인해 보세요.':
+    '한 번 더 풀어 보면 단어가 훨씬 선명해질 거예요.';
+  const sec=document.getElementById('missedSection'), list=document.getElementById('missedList'), rw=document.getElementById('retryWrongBtn');
+  list.innerHTML='';
+  if(!missed.length){sec.style.display='none';rw.style.display='none'}
+  else{
+    sec.style.display='block';rw.style.display='inline-block';
+    missed.forEach(q=>{
+      const d=document.createElement('div');d.className='missed-item';
+      d.textContent=`${q.prompt.replace(/\n/g,' ')} → ${q.answer}`;
+      list.appendChild(d);
+    });
+  }
+}
+
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>startMode(b.dataset.mode)));
+document.getElementById('homeBtn').addEventListener('click',goHome);
+document.getElementById('restartBtn').addEventListener('click',()=>startMode(modeKey));
+document.getElementById('nextBtn').addEventListener('click',next);
+document.getElementById('resultHomeBtn').addEventListener('click',goHome);
+document.getElementById('retryAllBtn').addEventListener('click',()=>startMode(modeKey));
+document.getElementById('retryWrongBtn').addEventListener('click',()=>startMode(modeKey, missed));
+</script>
+</body>
+</html>
